@@ -60,14 +60,39 @@ h1, h2, h3 {
     border-radius: 10px;
     border: 2px solid #ff69b4;
     background-color: white;
+    color: #333333;
 }
 .stSuccess, .stInfo, .stWarning, .stError {
     border-radius: 10px;
     border: 2px solid #ff1493;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #333333;
 }
 .stDivider {
     border-color: #ff69b4;
+}
+.stApp, .stApp * {
+    color: #333333 !important;
+}
+.stApp a, .stApp a:visited {
+    color: #ff1493 !important;
+}
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    .stApp {
+        padding: 20px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+    }
+    .stButton>button {
+        width: 100%;
+        font-size: 15px;
+    }
+    .stTextInput>div>div>input {
+        width: 100%;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
