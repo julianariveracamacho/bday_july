@@ -1,9 +1,30 @@
 import streamlit as st
 import sqlite3
 import random
+import socket
 from datetime import datetime
 
 st.set_page_config(page_title="July's B-Day Challenge", page_icon="🎉", layout="centered")
+
+# Access instructions: run Streamlit with network options instead of setting them on the fly
+# Example:
+# streamlit run julybday.py --server.address 0.0.0.0 --server.port 8501 --server.enableCORS false --server.enableXsrfProtection false
+
+# Note: set_option for server.address/port is not allowed at runtime in Streamlit.
+
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(("8.8.8.8", 80))
+        return s.getsockname()[0]
+    except Exception:
+        return "127.0.0.1"
+    finally:
+        s.close()
+
+local_ip = get_local_ip()
+
+st.info(f"Access this app from your phone browser at: http://{local_ip}:8501")
 
 # Custom CSS for styling - Pink Theme
 st.markdown("""
@@ -117,6 +138,25 @@ st.write("I hope you enjoy yourself and have a great time!! 🌈")
 
 st.divider()
 
+# Display local images if available, otherwise use web fallback to ensure visibility
+import os
+
+img_paths = ["IMG_9277.jpeg", "IMG_9276.jpeg"]
+any_image_shown = False
+# smaller width for mobile/device friendliness
+image_width = 350
+for img_path in img_paths:
+    if os.path.exists(img_path):
+        st.image(img_path, width=image_width, caption=f"Image: {img_path}")
+        any_image_shown = True
+
+if not any_image_shown:
+    st.warning("No local image files found. Showing placeholder images instead.")
+    st.image("https://images.unsplash.com/photo-1524169358669-1a97c3aa6e96?auto=format&fit=crop&w=1200&q=80", width=image_width, caption="Birthday celebration")
+    st.image("https://images.unsplash.com/photo-1533723159674-7f83f5e8af69?auto=format&fit=crop&w=1200&q=80", width=image_width, caption="Party fun")
+
+st.divider()
+
 name = st.text_input("Your name:")
 
 st.write(
@@ -140,14 +180,14 @@ st.write(
 )
 
 topics = [
-    "Your most embarrassing moment 😂",
-    "A secret talent you have 💖",
-    "Your favorite travel destination 🌍",
-    "Your worst date ever 💀",
-    "What you would do with 1 million euros 💸",
-    "Your biggest life goal💖",
-    "Your favorite moment with me 💖",
-    "Why do men belong to jail 💀"
+    "Comunism",
+    "Worst date ever",
+    "Who is the person in this party that makes you curious and why?",
+    "New year's resolution",
+    "A surprising talent of yours",
+    "A kindness you witnessed recently",
+    "Can a woman and a man be just friends?",
+    "Why do men belong to jail?"
 ]
 
 st.markdown("""
@@ -165,13 +205,19 @@ st.markdown("""
 <div style='background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 10px; border: 2px solid #ff69b4; margin: 10px 0;'>
 <h3 style='color: #ff1493; text-align: center;'>📋 Additional Information</h3>
 <p>📸 This is the menu of the bar:</p>
-<p><a href='https://drive.google.com/file/d/1hiv8T22LzFchES53mo-qTEgLw6AVZbA8/view?usp=sharing' target='_blank' style='color: #ff1493; font-weight: bold;'>🍹 Open the bar menu 🍹</a></p>
+<p><a href='https://drive.google.com/file/d/17ZlbYJ5aj_-LTZ8C_DR-YL0UKHJyB7OQ/view?usp=sharing' target='_blank' style='color: #ff1493; font-weight: bold;'>🍹 Open the bar menu 🍹</a></p>
 <p>📸 You can take pictures and upload them here:</p>
 <p><a href='https://drive.google.com/drive/folders/12YeXZR7BmuNqyPIFRPfniFeXop5KCO6N?usp=sharing' target='_blank' style='color: #ff1493; font-weight: bold;'>📤 Upload your pictures 📤</a></p>
 <p>💖 I love you all so much and I am happy that you are part of this special night! 🌟</p>
 <p><strong>Bestitos, July 💕✨</strong></p>
 </div>
 """, unsafe_allow_html=True)
+
+st.divider()
+
+# in case local IMG_9276.png is needed here as well
+if os.path.exists("IMG_9276.png"):
+    st.image("IMG_9276.png", width=image_width, caption="Image: IMG_9276.png")
 
 st.divider()
 
